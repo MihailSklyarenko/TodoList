@@ -1,0 +1,33 @@
+version: '3.6'
+
+services:
+  todo-service:
+    build:
+        context: .
+    restart: always
+    container_name: todoservice
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+        - '80:80'
+        - '443:443'
+    
+  postgres:
+    image: postgres:latest
+    ports:
+        - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+    
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: "rmuser"
+      RABBITMQ_DEFAULT_PASS: "rmpassword"
+    restart: always
+    container_name: rabbitmq
+    ports:
+        - '15672:15672'
+        - '5672:5672'      
+    
